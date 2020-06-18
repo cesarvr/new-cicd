@@ -9,7 +9,7 @@ spec:
   source:
     git:
       ref: master
-      uri: https://github.com/cesarvr/Spring-Boot 
+      uri: https://gogs-luck-ns.apps.rhos.agriculture.gov.ie/cesar/new-cicd.git
     sourceSecret:
       name: gitsecret
     type: Git
@@ -17,8 +17,8 @@ spec:
     jenkinsPipelineStrategy:
       env:
       - name: APPLICATION_NAME
-        value: service-a 
+        value: service-a
       - name: PROJECT
-        value: ctest
+        value: cicd-example
       jenkinsfilePath: Jenkinsfile
     type: JenkinsPipeline

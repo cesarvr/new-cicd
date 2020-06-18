@@ -56,10 +56,7 @@ oc project <your-project>
 Now you can create the pipeline like this:
 
 ```sh
-sh jenkins\install.sh <micro-service-name> <git-HTTP-url-to-your-code>
-
-#Example
-sh jenkins\install.sh service-b https://github.com/cesarvr/Spring-Boot.git
+oc create -f install.yml
 ```
 
 This will create a Openshift pipeline build which automatically do this:
@@ -220,9 +217,9 @@ This will give you a temporary shell inside the container there you can try to e
 
 ## Sleuth/Zipkin Instrumentation
 
-A typical problem with highly distributed systems is that they can be a pain to debug when something goes wrong. To help with this, I included in this project [Spring Boot Sleuth](https://spring.io/projects/spring-cloud-sleuth) which implement distributed tracing capabilities in a transparent way to the user. 
+A typical problem with highly distributed systems is that they can be a pain to debug when something goes wrong. To help with this, I included in this project [Spring Boot Sleuth](https://spring.io/projects/spring-cloud-sleuth) which implement distributed tracing capabilities in a transparent way to the user.
 
-In addition to Sleuth this project also includes Zipkin ([Sleuth Adapter](https://github.com/cesarvr/Spring-Boot/blob/master/pom.xml#L69-L72)) which basically sends these traces to the [Zipkin server](https://zipkin.io/). This server also includes a dashboard where you can monitor not only the activity of the services but also their dependencies. 
+In addition to Sleuth this project also includes Zipkin ([Sleuth Adapter](https://github.com/cesarvr/Spring-Boot/blob/master/pom.xml#L69-L72)) which basically sends these traces to the [Zipkin server](https://zipkin.io/). This server also includes a dashboard where you can monitor not only the activity of the services but also their dependencies.
 
 ![Dependencies between services](https://github.com/cesarvr/zipkin/blob/master/docs/zipkin-deps.gif?raw=true)
 
@@ -266,7 +263,7 @@ To test the instrumentation I have added to this project two additional endpoint
 
 ![](https://raw.githubusercontent.com/cesarvr/Spring-Boot/master/docs/zipkin.PNG)
 
-> The idea is to create the ``Ping! Pong!`` string by bouncing the calls between them. 
+> The idea is to create the ``Ping! Pong!`` string by bouncing the calls between them.
 
 #### Configuration
 

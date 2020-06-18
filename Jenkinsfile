@@ -2,6 +2,11 @@
 def MAVEN_CONTAINER = "registry.redhat.io/openshift3/jenkins-agent-maven-35-rhel7:v3.11"
 def JNLP_CONTAINER = 'jnlp'
 
+/*
+  Jenkins variables from the install.yml:
+  APPLICATION_NAME
+
+*/
 
 /*
    This creates a container to run your build, as you can see using the default
@@ -11,9 +16,9 @@ def JNLP_CONTAINER = 'jnlp'
  */
 
 podTemplate(
-    cloud:'openshift', 
+    cloud:'openshift',
     label: BUILD_TAG,
-    /* 
+    /*
        Add a Config Map example
        volumes: [ configMapVolume(configMapName: "mvn-settings", mountPath: "/cfg")],
      */
@@ -26,16 +31,18 @@ podTemplate(
 
     container(JNLP_CONTAINER) {
       stage('Creating Openshift Objects') {
-        sh "python pipeline/deploy.py project=${PROJECT} name=${APPLICATION_NAME}" 
-      }
-        
-      stage("Compile and Testing"){
-        sh   'mvn test package'
+        sh "python deploy.py project=${PROJECT} name=${APPLICATION_NAME}"
       }
 
-      
+      stage("Compile and Testing"){
+        sh "mvn test package"
+      }
+
+      stage('Creating Container'){
+        sh "oc start-build bc/${APPLICATION_NAME} --from-file=\$(ls target/*.jar) --follow"
+      }
+
     }
 
   }
 }
-
