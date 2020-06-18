@@ -31,6 +31,7 @@ podTemplate(
 
     container(JNLP_CONTAINER) {
       stage('Creating Openshift Objects') {
+        sh "ls -art"
         sh "python deploy.py project=${PROJECT} name=${APPLICATION_NAME}"
       }
 
