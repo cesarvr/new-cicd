@@ -17,25 +17,24 @@ podTemplate(
        Add a Config Map example
        volumes: [ configMapVolume(configMapName: "mvn-settings", mountPath: "/cfg")],
      */
-    containers: [ containerTemplate(name: "jnlp", image: MAVEN_CONTAINER) ] ) {
-  node(BUILD_TAG) {
+    containers: [ containerTemplate(name: "jnlp", image: MAVEN_CONTAINER) ] 
+    ) {
+      node(BUILD_TAG) {
 
-    stage('Clone Repository'){
-      checkout scm
-    }
+        stage('Clone Repository'){
+          checkout scm
+        }
 
-    container(JNLP_CONTAINER) {
-      stage('Creating Openshift Objects') {
-        sh "python pipeline/deploy.py project=${PROJECT} name=${APPLICATION_NAME}" 
+        container(JNLP_CONTAINER) {
+           
+          stage("Container Configuration") {
+            sh "python create.py name=${APPLICATION_NAME} project=${PROJECT}"
+          }
+
+          stage("Compile and Testing"){
+            sh   'mvn package'
+          }
+        }
       }
-        
-      stage("Compile and Testing"){
-        sh   'mvn test package'
-      }
-
-      
-    }
-
-  }
 }
 
