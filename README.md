@@ -70,14 +70,12 @@ This will create a Openshift pipeline build which automatically do this:
 
 ### The Pipeline Is There Now What ?
 
-Once the pipeline is created it will create the [Openshift components](https://github.com/cesarvr/Openshift) ([BuildConfig](#), Deployment Configuration, Service and Router) to deploy your Spring Boot application. The code to create this components is stored in the root folder Jenkins folder/[build.sh](https://github.com/cesarvr/Spring-Boot/blob/master/jenkins/build.sh) and is invoked by the [Jenkinsfile](https://github.com/cesarvr/Spring-Boot/blob/master/Jenkinsfile#L32) as part of the build process:
+Once the pipeline is created it will create the [Openshift components](https://github.com/cesarvr/Openshift) ([BuildConfig](#), Deployment Configuration, Service and Router) to deploy your Spring Boot application. 
 
-```groovy
-  steps {
-    echo "Creating Openshift Objects"
-    sh "echo creating objects for ${appName} && chmod +x ./jenkins/build.sh && ./jenkins/build.sh ${appName}"
-  }
-```
+This deployment is handle by ``yaml`` [templates](https://gogs-luck-ns.apps.rhos.agriculture.gov.ie/cesar/new-cicd/src/master/templates/ocp) that defines the Openshift objects you need to deploy the Java SpringBoot application. 
+
+To apply modifications you can add snippets to the ``templates/patches`` section. To see an example on how they look [see demo patches folder](https://gogs-luck-ns.apps.rhos.agriculture.gov.ie/cesar/new-cicd/src/master/patches_demo).
+
 
 > The Jenkinsfile is the place that you should start customizing to fit your particular case.
 
