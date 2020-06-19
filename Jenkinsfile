@@ -24,27 +24,27 @@ podTemplate(
        volumes: [ configMapVolume(configMapName: "mvn-settings", mountPath: "/cfg")],
      */
     containers: [ containerTemplate(name: "jnlp", image: MAVEN_CONTAINER) ] ) {
-  node(BUILD_TAG) {
+      node(BUILD_TAG) {
 
-    stage('Clone Repository'){
-      checkout scm
-    }
+        stage('Clone Repository'){
+          checkout scm
+        }
 
-    container(JNLP_CONTAINER) {
-      stage('Creating Openshift Objects') {
-        sh "ls -art"
-        sh "python create.py project=${PROJECT} name=${APPLICATION_NAME}"
+        container(JNLP_CONTAINER) {
+          stage('Creating Openshift Objects') {
+            sh "ls -art"
+            sh "python create.py project=${PROJECT} name=${APPLICATION_NAME}"
+          }
+
+          stage("Compile and Testing"){
+            sh "mvn test package"
+          }
+
+          stage('Creating Container'){
+            sh "oc start-build bc/${APPLICATION_NAME} --from-file=\$(ls target/*.jar) --follow"
+          }
+
+        }
+
       }
-
-      stage("Compile and Testing"){
-        sh "mvn test package"
-      }
-
-      stage('Creating Container'){
-        sh "oc start-build bc/${APPLICATION_NAME} --from-file=\$(ls target/*.jar) --follow"
-      }
-
-    }
-
-  }
 }
