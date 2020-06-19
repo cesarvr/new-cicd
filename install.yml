@@ -24,9 +24,9 @@ spec:
     type: JenkinsPipeline
   triggers:
   - github:
-      secret: YrKpVQkMwqborVK7mzwS
+      secret: YrKpVQkMwqbo4rVK7mzwS
     type: GitHub
   - generic:
-      secret: 17a8hsS8dFMmX2vUYNK6
+      secret: 17a8hsS8dFMmX3vUYNK6
     type: Generic
   - type: ConfigChange

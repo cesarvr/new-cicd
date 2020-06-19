@@ -5,4 +5,4 @@ spec:
       - name: default-container
         resources:
             limits:
-              memory: 600Mi
+              memory: 680Mi

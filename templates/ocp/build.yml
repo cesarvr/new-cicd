@@ -2,17 +2,16 @@ apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
   labels:
-    build: %name% 
-    application: %name% 
-    app: %name% 
-  name: %name% 
+    build: %name%
+    application: %name%
+    app: %name%
+  name: %name%
 spec:
   output:
     to:
       kind: ImageStreamTag
       name: %name%:latest
   source:
-    binary: {}
     type: Binary
   strategy:
     sourceStrategy:
