@@ -72,4 +72,4 @@ buildComponents(ocp_components, arguments)
 
 print "Patching.."
 patches = parseBuildTemplate("templates/patches", arguments)
-applyPatches(ocp_components, arguments)
+applyPatches(patches, arguments)
