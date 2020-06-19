@@ -28,6 +28,20 @@ def parseBuildTemplate(path, arguments):
 
     return ret
 
+def getUserArguments():
+    USAGE = "Usage: deploy.py param_name=<value1> param_name=<value2>"
+    args = sys.argv[1:]
+
+    if not args:
+        sys.exit(USAGE)
+
+    ap = [pair.split("=") for pair in args]
+    ap = map(lambda n: (n[0], n[1]), ap)
+    ret = dict(ap)
+
+    return ret
+
+
 def buildComponents(parsedTemplates, arguments):
     ns = arguments['project']
     cmd = ["oc", "apply", "-n", ns, "-f", "-"]
