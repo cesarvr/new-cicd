@@ -1,6 +1,7 @@
 
 def MAVEN_CONTAINER = "registry.redhat.io/openshift3/jenkins-agent-maven-35-rhel7:v3.11"
 def CONTAINER_NAME = 'jnlp'
+def JVM_OPTIONS = "-DproxySet=true -DproxyHost=vsdbahlprxy1 -DproxyPort=8080"
 
 /*
   Jenkins variables from the install.yml:
@@ -36,12 +37,11 @@ podTemplate(
 
         container(CONTAINER_NAME) {
           stage('Creating Openshift Objects') {
-            sh "ls -art"
             sh "python create.py project=${PROJECT} name=${APPLICATION_NAME}"
           }
 
           stage("Compile and Testing"){
-            sh "mvn test package"
+            sh "mvn ${JVM_OPTIONS} test package"
           }
 
           stage('Creating Container'){
