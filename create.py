@@ -70,4 +70,4 @@ ocp_components = parseBuildTemplate("templates/ocp", arguments)
 buildComponents(ocp_components, arguments)
 
 patches = parseBuildTemplate("templates/patches", arguments)
-buildComponents(ocp_components, arguments)
+applyPatches(ocp_components, arguments)
