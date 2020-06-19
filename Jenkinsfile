@@ -1,6 +1,6 @@
 
 def MAVEN_CONTAINER = "registry.redhat.io/openshift3/jenkins-agent-maven-35-rhel7:v3.11"
-def CONTAINER_NAME = 'maven-agent'
+def CONTAINER_NAME = 'jnlp'
 
 /*
   Jenkins variables from the install.yml:
@@ -26,9 +26,8 @@ podTemplate(
     containers: [
       containerTemplate(name: CONTAINER_NAME,
                         image: MAVEN_CONTAINER,
-                        ttyEnabled:true,
-                        command:'cat')
-                                         ] ) {
+                        envVars: [envVar(key: 'PATH', value: '/opt/rh/rh-maven35/root/usr/bin:$PATH')] )]
+    ) {
       node(BUILD_TAG) {
 
         stage('Clone Repository'){
