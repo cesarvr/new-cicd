@@ -25,10 +25,10 @@ podTemplate(
      */
     containers: [
       containerTemplate(name: CONTAINER_NAME,
-                              image: MAVEN_CONTAINER,
-                              ttyEnable:true,
-                              command:'cat')
-                                               ] ) {
+                        image: MAVEN_CONTAINER,
+                        ttyEnabled:true,
+                        command:'cat')
+                                         ] ) {
       node(BUILD_TAG) {
 
         stage('Clone Repository'){
