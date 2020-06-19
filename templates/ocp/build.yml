@@ -19,4 +19,4 @@ spec:
         kind: ImageStreamTag
         name: redhat-openjdk18-openshift:1.5
         namespace: openshift
-    type: Source
+    

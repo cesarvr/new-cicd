@@ -11,20 +11,23 @@ def readTemplates(file, arguments):
     return content
 
 def parseBuildTemplate(path, arguments):
-    templates = listdir(path)
-    templates = map(lambda template: path + "/" + template, templates)
-    return map(lambda template: readTemplates(template, arguments), templates)
+    try:
+        templates = listdir(path)
+        templates = map(lambda template: path + "/" + template, templates)
+        return map(lambda template: readTemplates(template, arguments), templates)
 
 
-    USAGE = "Usage: deploy.py param_name=<value1> param_name=<value2>"
-    args = sys.argv[1:]
+        USAGE = "Usage: deploy.py param_name=<value1> param_name=<value2>"
+        args = sys.argv[1:]
 
-    if not args:
-        sys.exit(USAGE)
+        if not args:
+            sys.exit(USAGE)
 
-    ap = [pair.split("=") for pair in args]
-    ap = map(lambda n: (n[0], n[1]), ap)
-    ret = dict(ap)
+        ap = [pair.split("=") for pair in args]
+        ap = map(lambda n: (n[0], n[1]), ap)
+        ret = dict(ap)
+    except:
+        return []
 
     return ret
 
