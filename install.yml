@@ -2,9 +2,9 @@ apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
   labels:
-    build: service-a
-    app: service-a
-  name: service-a
+    build: spring-boot-deployer
+    app: spring-boot-deployer
+  name: spring-boot-deployer
 spec:
   source:
     git:
@@ -17,7 +17,7 @@ spec:
     jenkinsPipelineStrategy:
       env:
       - name: APPLICATION_NAME
-        value: service-a
+        value: java-microservice
       - name: PROJECT
         value: cicd-examples
       jenkinsfilePath: Jenkinsfile

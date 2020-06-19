@@ -1,6 +1,6 @@
 
 def MAVEN_CONTAINER = "registry.redhat.io/openshift3/jenkins-agent-maven-35-rhel7:v3.11"
-def JNLP_CONTAINER = 'jnlp'
+def CONTAINER_NAME = 'maven-agent'
 
 /*
   Jenkins variables from the install.yml:
@@ -23,14 +23,19 @@ podTemplate(
        Add a Config Map example
        volumes: [ configMapVolume(configMapName: "mvn-settings", mountPath: "/cfg")],
      */
-    containers: [ containerTemplate(name: "jnlp", image: MAVEN_CONTAINER) ] ) {
+    containers: [
+      containerTemplate(name: CONTAINER_NAME,
+                              image: MAVEN_CONTAINER,
+                              ttyEnable:true,
+                              command:'cat')
+                                               ] ) {
       node(BUILD_TAG) {
 
         stage('Clone Repository'){
           checkout scm
         }
 
-        container(JNLP_CONTAINER) {
+        container(CONTAINER_NAME) {
           stage('Creating Openshift Objects') {
             sh "ls -art"
             sh "python create.py project=${PROJECT} name=${APPLICATION_NAME}"
