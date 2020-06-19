@@ -65,9 +65,11 @@ def applyPatches(patchTemplates, arguments):
 
 
 ## Entry Point
+print "Creating.."
 arguments = getUserArguments()
 ocp_components = parseBuildTemplate("templates/ocp", arguments)
 buildComponents(ocp_components, arguments)
 
+print "Patching.."
 patches = parseBuildTemplate("templates/patches", arguments)
 applyPatches(ocp_components, arguments)
