@@ -46,7 +46,7 @@ podTemplate(
 
           stage('Creating Container'){
             sh "oc start-build bc/${APPLICATION_NAME} --from-file=\$(ls target/*.jar) --follow"
-            //sh "oc wait dc/${APPLICATION_NAME} --for condition=available --timeout=-1s"
+            sh "oc wait dc/${APPLICATION_NAME} --for condition=available --timeout=-1s"
           }
 
         }
