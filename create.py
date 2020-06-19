@@ -2,7 +2,7 @@
 
 import subprocess
 from os import listdir
-import sys 
+import sys
 
 def readTemplates(file, arguments):
     content = open(file, "r").read()
@@ -23,25 +23,25 @@ def parseBuildTemplate(path, arguments):
         sys.exit(USAGE)
 
     ap = [pair.split("=") for pair in args]
-    ap = map(lambda n: (n[0], n[1]), ap) 
+    ap = map(lambda n: (n[0], n[1]), ap)
     ret = dict(ap)
 
-    return ret 
+    return ret
 
 def buildComponents(parsedTemplates, arguments):
     ns = arguments['project']
     cmd = ["oc", "apply", "-n", ns, "-f", "-"]
 
- for template in parsedTemplates:
-    ocProcess = subprocess.Popen(cmd, stdin=subprocess.PIPE)
-    ocProcess.communicate(template)
-    ocProcess.wait()
+    for template in parsedTemplates:
+        ocProcess = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+        ocProcess.communicate(template)
+        ocProcess.wait()
 
 def applyPatches(patchTemplates, arguments):
     name = arguments['name']
     ns   = arguments['project']
 
-    for template in patchTemplates: 
+    for template in patchTemplates:
         cmd  = ["oc", "patch", "dc", name, "-n", ns, "--patch", template]
         oc_proc = subprocess.Popen(cmd,  stdin=subprocess.PIPE)
         oc_proc.wait()
@@ -54,11 +54,3 @@ buildComponents(ocp_components, arguments)
 
 patches = parseBuildTemplate("templates/patches", arguments)
 buildComponents(ocp_components, arguments)
-
-
-
-
-
-
-
-
