@@ -18,6 +18,7 @@ def JNLP_CONTAINER = 'jnlp'
 podTemplate(
     cloud:'openshift',
     label: BUILD_TAG,
+    serviceAccount: 'jenkins',
     /*
        Add a Config Map example
        volumes: [ configMapVolume(configMapName: "mvn-settings", mountPath: "/cfg")],
