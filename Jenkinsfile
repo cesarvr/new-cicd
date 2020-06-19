@@ -26,7 +26,7 @@ podTemplate(
     containers: [
       containerTemplate(name: CONTAINER_NAME,
                         image: MAVEN_CONTAINER,
-                        envVars: [envVar(key: 'PATH', value: '/opt/rh/rh-maven35/root/usr/bin:$PATH')] )]
+                        envVars: [envVar(key: 'PATH', value: '/opt/rh/rh-maven35/root/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin')] )]
     ) {
       node(BUILD_TAG) {
 
