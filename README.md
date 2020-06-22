@@ -3,7 +3,6 @@
 
 <!--ts-->
    * [Getting Your Code Into Jenkins](#getting-your-code-into-jenkins)
-   * [Local Development](#local-development)
    * [Debugging A Container (Running On OpenShift)](#debugging-a-container)
    * [Watch The Logs](#watching-the-logs)
    * [Zipkin Instrumentation](#sleuthzipkin-instrumentation)
@@ -74,91 +73,10 @@ Once the pipeline is created it will create the [Openshift components](https://g
 
 This deployment is handle by ``yaml`` [templates](https://gogs-luck-ns.apps.rhos.agriculture.gov.ie/cesar/new-cicd/src/master/templates/ocp) that defines the Openshift objects you need to deploy the Java SpringBoot application. 
 
-To apply modifications you can add snippets to the ``templates/patches`` section. To see an example on how they look [see demo patches folder](https://gogs-luck-ns.apps.rhos.agriculture.gov.ie/cesar/new-cicd/src/master/patches_demo).
+To keep the templates short and maintainable you can customize sections of the deployment using [yaml patches](https://gogs-luck-ns.apps.rhos.agriculture.gov.ie/cesar/new-cicd/src/master/patches_demo).
 
 
 > The Jenkinsfile is the place that you should start customizing to fit your particular case.
-
-<a name="local"/>
-
-## Local Development
-
-One of the best ways to get a feeling of how your services behave in Openshift is to deploy your applications there, here I provide a ``script`` to create a prototypical infrastructure to deploy a micro-service, to create this you should do:
-
-```sh
- sh jenkins\build.sh my-java-app
-```
-
-> This creates the Openshift components to deploy Spring Boot applications.
-
-Now we just need to send our self-bootable-server-jar there, we can do this by running the following command:
-
-First generate the JAR:
-
-```sh
-mvn package
-```
-> Before pushing *JAR binaries* to Openshift just keep in mind that the supported OpenJDK version is ``"1.8.0_161``.
-
-Then push the JAR to the [Build Configuration](#) by doing:
-
-```sh
- oc start-build bc/my-java-app --from-file=target\spring-boot-0.0.1-SNAPSHOT.jar --follow
-```
-
-> If this command finish successfully, it means that there is an [image](#) in the cluster with your application.
-
-Next step is to deploy this [image](#) you can do this by doing:
-
-```sh
-oc rollout latest dc/my-java-app
-```
-
-![](https://raw.githubusercontent.com/cesarvr/Spring-Boot/master/docs/deploy.PNG)
-
-
-> This take the container with your application and creates an instance in one of the ``worker-nodes``.
-
-To access the application you need to retrieve the URL:
-
-```sh
-oc get routes  my-java-app -o=jsonpath='{.spec.host}'
-# my-java-service-url
-```
-
-![](https://raw.githubusercontent.com/cesarvr/Spring-Boot/master/docs/url.PNG)
-> Past the URL in your browser and you should be able to see your application.
-
-### Re-Deploy
-
-The creation process with the ``build.sh`` should be done once, to re-deploy new changes you can do this:
-
-```sh
-mvn package
-oc start-build bc/my-java-app --from-file=target\spring-boot-0.0.1-SNAPSHOT.jar --follow
-```
-> Your changes should be now deployed.
-
-
-### Delegating Source Code Compilation To Openshift
-
-Sometimes pushing a binary can be problematic because:
-
-- You have a different Java version than the container.
-- You don't have Maven installed.
-
-
-In those cases you can send your Spring Boot source code (only Maven supported) to the [Build Configuration](#) by doing this:
-
-```sh
-oc start-build bc/my-java-app --from-file=. --follow
-```
-
-Everything from here is the same as the binary version:
-
-```sh
-oc rollout latest dc/my-java-app
-```
 
 ### Troubleshooting Problems
 

@@ -41,12 +41,12 @@ podTemplate(
           }
 
           stage("Compile and Testing"){
-            sh "mvn ${JVM_OPTIONS} test package"
+            sh "mvn ${JVM_OPTIONS} package"
           }
 
           stage('Creating Container'){
-            sh "oc start-build bc/${APPLICATION_NAME} --from-file=\$(ls target/*.jar) --follow"
-            sh "oc wait dc/${APPLICATION_NAME} --for condition=available --timeout=-1s"
+            sh "oc start-build -n ${PROJECT} bc/${APPLICATION_NAME} --from-file=\$(ls target/*.jar) --follow"
+            sh "oc wait -n ${PROJECT} dc/${APPLICATION_NAME} --for condition=available --timeout=-1s"
           }
 
         }
